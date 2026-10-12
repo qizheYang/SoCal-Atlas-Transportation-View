@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.cache/
+*.tsbuildinfo
+.DS_Store
+test-results/
+__pycache__/
+*.pyc
+.venv-data/
+.env
+.env.*
+/public/data/roads-index.json
+/public/data/roads/*.geojson

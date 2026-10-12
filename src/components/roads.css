@@ -1,0 +1,350 @@
+.road-search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #9fc5be44;
+  border-radius: 7px;
+  background: #0c182366;
+  min-height: 42px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  color: #93b9b0;
+}
+.road-search input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: #edf4f0;
+  font-size: 11px;
+  outline: 0;
+}
+.road-search:focus-within {
+  border-color: #8bdcc3;
+}
+.road-search input::placeholder {
+  color: #88a1a5;
+}
+.road-search button,
+.road-detail header button {
+  background: transparent;
+  color: #b4c9c4;
+  padding: 0;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+}
+.road-kind {
+  display: flex;
+  gap: 3px;
+  background: #0c182366;
+  padding: 3px;
+  border-radius: 6px;
+  margin: 10px 0 15px;
+}
+.road-kind button {
+  flex: 1;
+  background: transparent;
+  color: #9db2b6;
+  font-size: 10px;
+  padding: 8px 3px;
+  min-height: 36px;
+  border-radius: 4px;
+}
+.road-kind button.active {
+  background: #3b565960;
+  color: #b6e9d8;
+}
+.road-browser select {
+  width: 100%;
+  background: #1b2d34;
+  color: #d9e6e0;
+  border: 1px solid #abc5c42e;
+  border-radius: 6px;
+  font-size: 10px;
+  padding: 10px 6px;
+  margin-top: 7px;
+  min-height: 40px;
+}
+.road-result-count {
+  font-size: 10px;
+  color: #8faeaa;
+  padding: 8px 4px;
+  border-bottom: 1px solid #a9c5c01c;
+}
+.road-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 7px 0;
+}
+.road-item {
+  display: flex;
+  width: 100%;
+  gap: 9px;
+  align-items: flex-start;
+  text-align: left;
+  background: transparent;
+  padding: 11px 7px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.road-item:hover {
+  background: #9bcebe13;
+}
+.road-item.selected {
+  background: #8bdcc31c;
+  border-color: #8bdcc344;
+}
+.road-type {
+  color: #aec7c0;
+  padding-top: 2px;
+}
+.road-type.highway {
+  color: #e7b677;
+}
+.road-item-copy {
+  min-width: 0;
+  flex: 1;
+}
+.road-item strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e3ece8;
+}
+.road-item small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #a5bcb8;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.road-item em {
+  display: block;
+  font-size: 9px;
+  font-style: normal;
+  color: #789992;
+  margin-top: 5px;
+}
+.road-item > svg {
+  color: #8bdcc3;
+  margin-top: 3px;
+}
+.road-more,
+.road-retry {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background: #52766c33;
+  color: #b4dfd0;
+  font-size: 10px;
+  margin: 6px 0 14px;
+  min-height: 38px;
+}
+.road-detail {
+  padding: 16px;
+}
+.road-detail header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.road-detail-title {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 5px;
+  color: #8bdcc3;
+}
+.road-detail h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  color: #edf4ef;
+  overflow-wrap: anywhere;
+}
+.road-detail-sub {
+  font-size: 10px;
+  color: #9cb4b1;
+  margin: 9px 0 16px;
+}
+.road-fit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px;
+  border: 1px solid #8bdcc339;
+  background: #8bdcc310;
+  border-radius: 6px;
+  color: #b6e9d8;
+  font-size: 11px;
+}
+.road-boundaries {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  color: #bfd2cd;
+  cursor: pointer;
+  line-height: 1.6;
+  min-height: 36px;
+}
+.road-boundaries input {
+  accent-color: #8bdcc3;
+}
+.road-stats {
+  display: flex;
+  padding: 15px 0;
+  margin: 6px 0 12px;
+  border-bottom: 1px solid #abc5c42e;
+  gap: 25px;
+}
+.road-stats strong {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #d9e9e0;
+}
+.road-stats small {
+  display: block;
+  font-size: 9px;
+  color: #8ba7a2;
+  margin-top: 3px;
+}
+.road-detail h3 {
+  font-size: 12px;
+  font-weight: 500;
+  color: #c7d9d2;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+.road-detail h3 span {
+  font-size: 9px;
+  color: #8ba7a2;
+}
+.road-detail-note {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #8ba7a2;
+}
+.road-cities {
+  list-style: none;
+  margin: 10px 0 16px;
+  padding: 0;
+}
+.road-cities li {
+  border-left: 2px solid #8bdcc344;
+  padding-left: 8px;
+}
+.road-cities button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+  padding: 8px;
+  min-height: 40px;
+  background: transparent;
+  color: #b5d2c8;
+  border-radius: 4px;
+}
+.road-cities button:hover:enabled {
+  background: #8bdcc312;
+}
+.road-cities button:disabled {
+  cursor: default;
+}
+.road-cities strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+}
+.road-cities small {
+  display: block;
+  margin-top: 3px;
+  font-size: 9px;
+  color: #819f99;
+}
+.road-aliases {
+  font-size: 10px;
+  color: #aac5bb;
+  border-top: 1px solid #abc5c425;
+  padding-top: 12px;
+  margin-bottom: 14px;
+}
+.road-aliases summary {
+  cursor: pointer;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+.road-aliases p {
+  line-height: 1.8;
+  color: #8ba7a2;
+}
+.road-source {
+  font-size: 9px;
+  color: #89bdab;
+}
+.road-global-more {
+  width: 100%;
+  padding: 12px;
+  background: #8bdcc315;
+  color: #b6e9d8;
+  font-size: 11px;
+  text-align: left;
+}
+.road-load-error {
+  position: absolute;
+  bottom: 155px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  padding: 14px 18px;
+  background: #482e2efa;
+  border: 1px solid #d49785;
+  border-radius: 8px;
+  color: #f1d8d0;
+  font-size: 12px;
+}
+.road-load-error button {
+  margin-left: 10px;
+  background: transparent;
+  color: #f1d8d0;
+}
+@media (max-width: 700px) {
+  .road-detail {
+    padding: 16px;
+  }
+  .road-detail h2 {
+    font-size: 18px;
+  }
+}
+
+.road-search button:hover,
+.road-detail header button:hover {
+  background: #8bdcc319;
+  color: #e4fff4;
+}
+.road-search button:focus-visible,
+.road-detail header button:focus-visible {
+  outline-offset: -2px;
+}
+.road-load-error {
+  max-width: min(420px, calc(100% - 28px));
+  line-height: 1.6;
+}
+.road-load-error button {
+  min-height: 36px;
+  min-width: 36px;
+}

@@ -1,0 +1,286 @@
+[
+  {
+    "id": "socal",
+    "name": "Southern California",
+    "shortName": "SoCal",
+    "subtitle": "南加州 · 10 县",
+    "center": [
+      -117.784693,
+      34.169372
+    ],
+    "zoom": 7,
+    "bearing": 0,
+    "bounds": [
+      [
+        -121.438176,
+        32.529508
+      ],
+      [
+        -114.131211,
+        35.809236
+      ]
+    ],
+    "countyFips": [
+      "06025",
+      "06029",
+      "06037",
+      "06059",
+      "06065",
+      "06071",
+      "06073",
+      "06079",
+      "06083",
+      "06111"
+    ]
+  },
+  {
+    "id": "imperial",
+    "name": "Imperial County",
+    "shortName": "Imperial",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -115.284539,
+      33.026127
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -116.106189,
+        32.618441
+      ],
+      [
+        -114.46289,
+        33.433814
+      ]
+    ],
+    "countyFips": [
+      "06025"
+    ]
+  },
+  {
+    "id": "kern",
+    "name": "Kern County",
+    "shortName": "Kern",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -118.905443,
+      35.293524
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -120.194369,
+        34.788655
+      ],
+      [
+        -117.616517,
+        35.798392
+      ]
+    ],
+    "countyFips": [
+      "06029"
+    ]
+  },
+  {
+    "id": "la",
+    "name": "Los Angeles County",
+    "shortName": "Los Angeles",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -118.299048,
+      33.786671
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -118.951721,
+        32.75004
+      ],
+      [
+        -117.646374,
+        34.823302
+      ]
+    ],
+    "countyFips": [
+      "06037"
+    ]
+  },
+  {
+    "id": "oc",
+    "name": "Orange County",
+    "shortName": "Orange County",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -117.780397,
+      33.640814
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -118.147806,
+        33.333992
+      ],
+      [
+        -117.412987,
+        33.947636
+      ]
+    ],
+    "countyFips": [
+      "06059"
+    ]
+  },
+  {
+    "id": "riverside",
+    "name": "Riverside County",
+    "shortName": "Riverside",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -116.055614,
+      33.752909
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -117.67628,
+        33.425933
+      ],
+      [
+        -114.434949,
+        34.079884
+      ]
+    ],
+    "countyFips": [
+      "06065"
+    ]
+  },
+  {
+    "id": "san-bernardino",
+    "name": "San Bernardino County",
+    "shortName": "San Bernardino",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -115.966875,
+      34.840152
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -117.802539,
+        33.871067
+      ],
+      [
+        -114.131211,
+        35.809236
+      ]
+    ],
+    "countyFips": [
+      "06071"
+    ]
+  },
+  {
+    "id": "san-diego",
+    "name": "San Diego County",
+    "shortName": "San Diego",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -116.84598,
+      33.017443
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -117.611081,
+        32.529508
+      ],
+      [
+        -116.08088,
+        33.505379
+      ]
+    ],
+    "countyFips": [
+      "06073"
+    ]
+  },
+  {
+    "id": "san-luis-obispo",
+    "name": "San Luis Obispo County",
+    "shortName": "San Luis Obispo",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -120.455333,
+      35.347065
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -121.438176,
+        34.897475
+      ],
+      [
+        -119.472489,
+        35.796655
+      ]
+    ],
+    "countyFips": [
+      "06079"
+    ]
+  },
+  {
+    "id": "santa-barbara",
+    "name": "Santa Barbara County",
+    "shortName": "Santa Barbara",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -119.848555,
+      34.262851
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -120.734382,
+        33.411024
+      ],
+      [
+        -118.962728,
+        35.114678
+      ]
+    ],
+    "countyFips": [
+      "06083"
+    ]
+  },
+  {
+    "id": "ventura",
+    "name": "Ventura County",
+    "shortName": "Ventura",
+    "subtitle": "SOUTHERN CALIFORNIA",
+    "center": [
+      -119.134398,
+      34.032332
+    ],
+    "zoom": 8,
+    "bearing": 0,
+    "bounds": [
+      [
+        -119.636302,
+        33.163493
+      ],
+      [
+        -118.632494,
+        34.901171
+      ]
+    ],
+    "countyFips": [
+      "06111"
+    ]
+  }
+]

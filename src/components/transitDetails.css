@@ -1,0 +1,57 @@
+.transit-stats {
+  gap: 16px;
+}
+.transit-stats strong {
+  font-size: 20px;
+}
+.transit-endpoints {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.transit-endpoints > li {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #9ac0b52b;
+  border-radius: 6px;
+  background: #19303933;
+}
+.transit-endpoints button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #bad7ce;
+  padding: 7px 5px;
+  min-height: 42px;
+  border-radius: 4px;
+}
+.transit-endpoints button:hover {
+  background: #8bdcc318;
+}
+.transit-endpoints button > span {
+  flex: 1;
+  min-width: 0;
+}
+.transit-endpoints button > svg {
+  flex-shrink: 0;
+}
+.transit-endpoints small {
+  display: block;
+  font-size: 9px;
+  color: #80a499;
+  margin-bottom: 3px;
+}
+.transit-endpoints strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.transit-endpoint-arrow {
+  color: #77998d;
+  margin-left: 3px;
+}

@@ -1,0 +1,87 @@
+{
+  "source": "U.S. Census Bureau TIGERweb",
+  "sourceUrl": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer",
+  "vintage": "2026-01-01",
+  "generatedAt": "2026-10-12T18:22:33.227635+00:00",
+  "counties": {
+    "06025": {
+      "name": "Imperial County",
+      "cities": 7,
+      "cdps": 11,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06059": {
+      "name": "Orange County",
+      "cities": 34,
+      "cdps": 13,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06071": {
+      "name": "San Bernardino County",
+      "cities": 24,
+      "cdps": 28,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06111": {
+      "name": "Ventura County",
+      "cities": 10,
+      "cdps": 16,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06065": {
+      "name": "Riverside County",
+      "cities": 28,
+      "cdps": 47,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06083": {
+      "name": "Santa Barbara County",
+      "cities": 8,
+      "cdps": 20,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06073": {
+      "name": "San Diego County",
+      "cities": 18,
+      "cdps": 39,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06029": {
+      "name": "Kern County",
+      "cities": 11,
+      "cdps": 77,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06079": {
+      "name": "San Luis Obispo County",
+      "cities": 7,
+      "cdps": 23,
+      "uncoveredSquareMeters": 0.0
+    },
+    "06037": {
+      "name": "Los Angeles County",
+      "cities": 88,
+      "cdps": 54,
+      "uncoveredSquareMeters": 0.0
+    }
+  },
+  "scope": "socal-ten",
+  "countyFips": [
+    "06025",
+    "06029",
+    "06037",
+    "06059",
+    "06065",
+    "06071",
+    "06073",
+    "06079",
+    "06083",
+    "06111"
+  ],
+  "method": "Exact county polygon intersection; county minus cities and CDPs for residual unincorporated areas",
+  "featureCount": 573,
+  "displayFile": "public/data/city-boundaries.geojson",
+  "fullResolutionFile": "scripts/.cache/boundaries/full-city-boundaries.geojson",
+  "displaySha256": "50976b519609f7b10742f99a59a2b51efc3b767bbd41f699401671e3ab049d59",
+  "fullResolutionSha256": "3b7fe113bef958de4cda048101cef58f3737b511463947917f3a6665adf5e772"
+}
