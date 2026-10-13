@@ -19,6 +19,7 @@ export function startupSettings(raw: string | null) {
     regionId: "socal",
     mode: "city" as ViewMode,
     is3D: false,
+    keyboardEnabled: saved.keyboardEnabled !== false,
     navigationMode:
       saved.navigationMode === "mouse"
         ? ("mouse" as const)

@@ -17,9 +17,21 @@ describe("regional entry", () => {
       regionId: "socal",
       mode: "city",
       is3D: false,
+      keyboardEnabled: true,
       navigationMode: "mouse",
       layers: { terrain: false, pois: false, roads: true },
     });
+  });
+  it("remembers an explicit keyboard opt-out, without trusting malformed values", () => {
+    expect(startupSettings('{"keyboardEnabled":false}').keyboardEnabled).toBe(
+      false,
+    );
+    for (const value of [true, null, "false", 0]) {
+      expect(
+        startupSettings(JSON.stringify({ keyboardEnabled: value }))
+          .keyboardEnabled,
+      ).toBe(true);
+    }
   });
   it.each([
     null,

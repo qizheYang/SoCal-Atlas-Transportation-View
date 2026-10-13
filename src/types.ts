@@ -73,6 +73,8 @@ export interface MapHandle {
   zoomBy: (delta: number) => void;
   resetBearing: () => void;
   rotateBy: (delta: number) => void;
+  setPitch: (pitch: number) => void;
+  focusMap: () => void;
 }
 export interface MapViewProps {
   regionId: RegionId;
@@ -80,6 +82,7 @@ export interface MapViewProps {
   layers: LayerSettings;
   is3D: boolean;
   navigationMode?: NavigationMode;
+  keyboardEnabled?: boolean;
   transitFilter: TransitFilter;
   roadSelection?: RoadSelection | null;
   roadSelections?: RoadSelection[];

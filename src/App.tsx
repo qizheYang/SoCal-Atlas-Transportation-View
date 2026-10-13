@@ -10,6 +10,7 @@ import {
   Crosshair,
   Globe2,
   Info,
+  Keyboard,
   Layers3,
   MapPin,
   Maximize,
@@ -27,6 +28,8 @@ import MapView from "./map/MapView";
 import { RoadsPanel, RoadDetails } from "./components/RoadsPanel";
 import { HighlightsTray } from "./components/HighlightsTray";
 import { TransitDetails } from "./components/TransitDetails";
+import { KeyboardHelp } from "./components/KeyboardHelp";
+import { keyboardEventIsFromControl } from "./map/keyboardNavigation";
 import { useRoadData } from "./data/useRoadData";
 import { publicAssetUrl } from "./data/publicAssetUrl";
 import {
@@ -110,6 +113,10 @@ export default function App() {
   const [mode, setMode] = useState<ViewMode>(initial.mode);
   const [is3D, setIs3D] = useState(initial.is3D);
   const [navigationMode, setNavigationMode] = useState(initial.navigationMode);
+  const [keyboardEnabled, setKeyboardEnabled] = useState(
+    initial.keyboardEnabled,
+  );
+  const [keyboardHelpOpen, setKeyboardHelpOpen] = useState(false);
   const [layers, setLayers] = useState<LayerSettings>(initial.layers);
   const [feature, setFeature] = useState<FeatureInfo | null>(null);
   const [status, setStatus] = useState<MapStatus>({
@@ -277,7 +284,7 @@ export default function App() {
     setRouteId(null);
     setLayers((value) => ({ ...value, transit: mode === "transit" }));
   };
-  const fitHighlights = () => {
+  const fitHighlights = useCallback(() => {
     const bounds = [...roads, ...selectedRoutes].map((item) => item.bounds);
     if (bounds.length)
       mapRef.current?.fitBounds([
@@ -290,7 +297,7 @@ export default function App() {
           Math.max(...bounds.map((b) => b[1][1])),
         ],
       ]);
-  };
+  }, [roads, selectedRoutes]);
   const chooseRoad = async (record: RoadRecord) => {
     setMode("roads");
     setTab("explore");
@@ -380,12 +387,12 @@ export default function App() {
     try {
       localStorage.setItem(
         "southland-settings",
-        JSON.stringify({ layers, navigationMode }),
+        JSON.stringify({ layers, navigationMode, keyboardEnabled }),
       );
     } catch {
       /* Private browsing can disable persistence. */
     }
-  }, [layers, navigationMode]);
+  }, [layers, navigationMode, keyboardEnabled]);
   useEffect(() => {
     const controller = new AbortController();
     async function load() {
@@ -440,30 +447,9 @@ export default function App() {
     void load();
     return () => controller.abort();
   }, []);
-  useEffect(() => {
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setSearchOpen(false);
-        setSourcesOpen(false);
-        setFeature(null);
-        setFocusedRoadId(null);
-        mapRef.current?.clearSelection();
-      }
-      if (
-        event.key === "/" &&
-        !(event.target instanceof HTMLInputElement) &&
-        !(event.target instanceof HTMLSelectElement)
-      ) {
-        event.preventDefault();
-        searchRef.current?.focus();
-        setSearchOpen(true);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
   const selectFeature = useCallback(
     (value: FeatureInfo | null) => {
+      setSearchOpen(false);
       if (
         value?.kind === "road" &&
         roads.some((item) => item.id === value.id)
@@ -494,7 +480,7 @@ export default function App() {
     },
     [],
   );
-  const chooseRegion = (id: string) => {
+  const chooseRegion = useCallback((id: string) => {
     setFocusedRoadId(null);
     setRegionId(id);
     setFeature(null);
@@ -503,7 +489,71 @@ export default function App() {
     mapRef.current?.clearSelection();
     setIs3D(false);
     mapRef.current?.fitRegion(id);
-  };
+  }, []);
+  const updateCamera = useCallback((next: CameraState) => {
+    setCamera(next);
+    // Keyboard tilt and mouse gestures report the real camera orientation.
+    // Mode changes must not feed back into a fixed 48-degree camera command.
+    setIs3D(next.pitch > 0);
+  }, []);
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (
+        event.defaultPrevented ||
+        event.isComposing ||
+        event.keyCode === 229 ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.repeat
+      )
+        return;
+      // The native help dialog owns Escape and restores its original focus.
+      if (keyboardHelpOpen) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (sourcesOpen) setSourcesOpen(false);
+        else if (searchOpen) setSearchOpen(false);
+        else {
+          setFeature(null);
+          setFocusedRoadId(null);
+          mapRef.current?.clearSelection();
+        }
+        mapRef.current?.focusMap();
+        return;
+      }
+      if (sourcesOpen || keyboardEventIsFromControl(event)) return;
+      if (event.key === "?") {
+        event.preventDefault();
+        setKeyboardHelpOpen(true);
+      } else if (event.key === "/") {
+        event.preventDefault();
+        searchRef.current?.focus();
+        setSearchOpen(true);
+      } else if (keyboardEnabled) {
+        const code = event.code || event.key.toLowerCase();
+        if (code === "KeyN" || code === "n") {
+          event.preventDefault();
+          mapRef.current?.resetBearing();
+        } else if (code === "Digit0" || code === "Numpad0" || code === "0") {
+          event.preventDefault();
+          chooseRegion("socal");
+        } else if (code === "KeyU" || code === "u") {
+          event.preventDefault();
+          fitHighlights();
+        }
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [
+    keyboardHelpOpen,
+    sourcesOpen,
+    searchOpen,
+    keyboardEnabled,
+    chooseRegion,
+    fitHighlights,
+  ]);
   const chooseRoute = (route: TransitRoute) => {
     const highlightColor = highlightColors.current.reserve(
       `transit:${route.id}`,
@@ -590,6 +640,7 @@ export default function App() {
         layers={layers}
         is3D={is3D}
         navigationMode={navigationMode}
+        keyboardEnabled={keyboardEnabled && !sourcesOpen && !keyboardHelpOpen}
         transitFilter={transitFilter}
         roadSelections={roadSelections}
         focusedRoadId={focusedRoadId}
@@ -597,7 +648,7 @@ export default function App() {
         showCityBoundaries={roads.length > 0 && showCityBoundaries}
         cityBoundaries={roadData.boundaries}
         onFeatureSelect={selectFeature}
-        onCameraChange={setCamera}
+        onCameraChange={updateCamera}
         onStatus={setStatus}
       />
       <div className="map-vignette" />
@@ -1066,7 +1117,7 @@ export default function App() {
           <button
             onClick={() => mapRef.current?.zoomBy(-1)}
             aria-label="缩小"
-            title="缩小"
+            title="缩小 · F / −"
           >
             <Minus size={18} />
           </button>
@@ -1079,7 +1130,7 @@ export default function App() {
           <button
             onClick={() => mapRef.current?.zoomBy(1)}
             aria-label="放大"
-            title="放大"
+            title="放大 · R / +"
           >
             <Plus size={18} />
           </button>
@@ -1088,7 +1139,7 @@ export default function App() {
           <button
             onClick={() => mapRef.current?.rotateBy(-15)}
             aria-label="向左旋转 15 度"
-            title="向左旋转 15°"
+            title="向左旋转 15° · 按住 Q 连续旋转"
           >
             <RotateCcw size={17} />
           </button>
@@ -1096,7 +1147,8 @@ export default function App() {
             className="compass-button"
             onClick={() => mapRef.current?.resetBearing()}
             aria-label="朝向正北"
-            title="恢复北朝上"
+            title="恢复北朝上 · N"
+            aria-keyshortcuts="N"
           >
             <span>N</span>
             <Compass
@@ -1107,7 +1159,7 @@ export default function App() {
           <button
             onClick={() => mapRef.current?.rotateBy(15)}
             aria-label="向右旋转 15 度"
-            title="向右旋转 15°"
+            title="向右旋转 15° · 按住 E 连续旋转"
           >
             <RotateCw size={17} />
           </button>
@@ -1115,9 +1167,12 @@ export default function App() {
         <div className="interaction-controls__row">
           <button
             className={`dimension-button ${is3D ? "active" : ""}`}
-            onClick={() => setIs3D((p) => !p)}
+            onClick={() => {
+              setIs3D(!is3D);
+              mapRef.current?.setPitch(is3D ? 0 : 48);
+            }}
             aria-label={is3D ? "切换到二维地图" : "切换到三维地图"}
-            title="切换平面 / 倾斜视图"
+            title="切换平面 / 倾斜视图 · T / G 自由调整俯仰"
           >
             {is3D ? "3D" : "2D"}
           </button>
@@ -1125,9 +1180,36 @@ export default function App() {
             className="overview-button"
             onClick={() => chooseRegion("socal")}
             aria-label="回到 SoCal 全览"
-            title="SoCal 全览 · 北朝上"
+            title="SoCal 全览 · 北朝上 · 0"
+            aria-keyshortcuts="0"
           >
             <Crosshair size={16} /> SoCal
+          </button>
+        </div>
+        <p className="interaction-controls__orientation">
+          朝向 {((camera.bearing + 360) % 360).toFixed(0)}° · 俯仰{" "}
+          {camera.pitch.toFixed(0)}°
+        </p>
+        <div className="interaction-controls__row keyboard-controls">
+          <button
+            aria-pressed={keyboardEnabled}
+            aria-label={
+              keyboardEnabled ? "停用键盘相机控制" : "启用键盘相机控制"
+            }
+            title="WASD 平移 · Q/E 旋转 · R/F 缩放 · T/G 俯仰"
+            onClick={() => setKeyboardEnabled((value) => !value)}
+          >
+            <Keyboard size={15} /> {keyboardEnabled ? "键盘 开" : "键盘 关"}
+          </button>
+          <button
+            onClick={() => setKeyboardHelpOpen(true)}
+            aria-label="键盘快捷键说明"
+            aria-haspopup="dialog"
+            aria-expanded={keyboardHelpOpen}
+            aria-keyshortcuts="Shift+/"
+            title="键盘快捷键 · ?"
+          >
+            快捷键 ?
           </button>
         </div>
       </div>
@@ -1221,7 +1303,7 @@ export default function App() {
           {navigationMode === "trackpad"
             ? "双指平移 · 捏合缩放"
             : "拖动平移 · 滚轮缩放"}{" "}
-          · 点击 N 恢复北向
+          · {keyboardEnabled ? "WASD 平移 · ? 快捷键" : "点击 N 恢复北向"}
         </span>
       </footer>
       {sourcesOpen && (
@@ -1229,6 +1311,9 @@ export default function App() {
           onClose={() => setSourcesOpen(false)}
           manifest={manifest}
         />
+      )}
+      {keyboardHelpOpen && (
+        <KeyboardHelp onClose={() => setKeyboardHelpOpen(false)} />
       )}
     </main>
   );

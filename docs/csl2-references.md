@@ -48,22 +48,32 @@ Inspected [traffic routes screenshot](https://images.ctfassets.net/u73tyf0fa8v1/
 
 **Application decisions:** V1 needs only rotate, tilt, zoom, reset north, 2D/3D, and selected-place focus. Building extrusions with a restrained directional light can suggest a city model; they are not photogrammetry. Actual heights and inferred/default heights must be distinguished. Terrain shading is optional and should not interfere with street and route legibility.
 
+## 7. Keyboard camera controls
+
+Research update: 2026-10-13. Visually inspected the game's own **Input → Keyboard** settings in this [original game UI screenshot](https://volx.jp/wp-content/uploads/2023/10/cities-skylines-2-keyboard-setting.jpg), hosted by [Raison Detre, 2023-10-25](https://volx.jp/cities-skylines-2-keyboard-controller-setting/). This is first-party UI evidence reproduced by a third-party site; the screenshot identifies launch build **1.0.9f1**, so it does not establish current defaults for every game version or customized keymap. No screenshot is bundled with the app.
+
+The visible settings assign camera movement to **W/A/S/D**, horizontal rotation to **Q/E**, zoom in/out to **R/F**, and vertical rotation to **T/G**. This supports adopting these four camera groups instead of copying a Cities: Skylines I keymap or a first-person camera mod.
+
+**Application decisions:** use screen-relative pan, continuous key-held movement, and simultaneous pan/rotate/zoom/tilt. For this map, `T` increases pitch toward a more oblique view and `G` decreases pitch toward overhead; these descriptions make the MapLibre adaptation explicit. Clamp the camera to its supported zoom and pitch limits. Clear held inputs on blur, hidden-page transitions, protected focus, and modal opening so returning to the page never resumes a stale movement.
+
+Arrow keys, `Shift` acceleration, `+`/`−`, `N` north reset, `0` SoCal overview, `U` selected-network focus, `/` search, and `?` help are documented together as **viewer shortcuts**. This does not claim they are all native CSL2 defaults. Input fields, form controls, modal dialogs, IME composition, and browser modifier combinations retain their normal keyboard behavior. A visible keyboard toggle and help dialog make the controls discoverable without requiring prior game knowledge. See [navigation behavior](navigation.md) for the full mapping.
+
 ## Proposed V1 visual system
 
 These values are original implementation choices informed by the visual study, not sampled game assets:
 
-| Element | Proposed treatment |
-| --- | --- |
-| Panel surface | Deep slate/navy, subtly translucent, thin cool border |
-| Main accent | Cyan for focus and selected map features |
-| Secondary accent | Amber for selected workspace/mode control |
-| Natural map | Muted olive/sage vegetation, dusty neutral urban land, blue water |
-| Analysis map | Ivory buildings, subdued neutral ground, slate roads |
-| Buildings | Low-saturation extrusions, fine footprint outline, height-aware only when supported |
-| Roads | Dark asphalt with lighter casing; width and casing encode road class |
-| Transport | Route-specific colors; stop symbols visible at useful zoom; selected line stronger |
-| Labels | Clean sans-serif, high-contrast halo, restrained density |
-| Region controls | LA + Orange County, with named locations for camera bookmarks |
+| Element          | Proposed treatment                                                                  |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| Panel surface    | Deep slate/navy, subtly translucent, thin cool border                               |
+| Main accent      | Cyan for focus and selected map features                                            |
+| Secondary accent | Amber for selected workspace/mode control                                           |
+| Natural map      | Muted olive/sage vegetation, dusty neutral urban land, blue water                   |
+| Analysis map     | Ivory buildings, subdued neutral ground, slate roads                                |
+| Buildings        | Low-saturation extrusions, fine footprint outline, height-aware only when supported |
+| Roads            | Dark asphalt with lighter casing; width and casing encode road class                |
+| Transport        | Route-specific colors; stop symbols visible at useful zoom; selected line stronger  |
+| Labels           | Clean sans-serif, high-contrast halo, restrained density                            |
+| Region controls  | LA + Orange County, with named locations for camera bookmarks                       |
 
 ## Acceptance criteria and scope
 

@@ -21,6 +21,7 @@ import {
 } from "./roadGeometry";
 import { activeRoadSelections } from "./roadStyle";
 import { installMapNavigation } from "./navigation";
+import { installKeyboardNavigation } from "./keyboardNavigation";
 import { useRouteOverlaps } from "./useRouteOverlaps";
 import { createCheckerboardImage } from "./overlapStyle";
 
@@ -37,6 +38,9 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
     const navigation = useRef<ReturnType<typeof installMapNavigation> | null>(
       null,
     );
+    const keyboard = useRef<ReturnType<
+      typeof installKeyboardNavigation
+    > | null>(null);
     const overlaps = useRouteOverlaps(props);
     const currentOverlaps = useRef(overlaps);
     currentOverlaps.current = overlaps;
@@ -52,6 +56,7 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
             ?.setData(EMPTY_COLLECTION);
         },
         flyTo(center, zoom = 14) {
+          keyboard.current?.reset();
           mapRef.current?.flyTo({
             center,
             zoom,
@@ -59,14 +64,17 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
           });
         },
         fitRegion(regionId) {
+          keyboard.current?.reset();
           const region = REGIONS.find((r) => r.id === regionId);
           if (region && mapRef.current)
             fitMapBounds(mapRef.current, region.bounds, { pitch: 0 });
         },
         fitBounds(bounds) {
+          keyboard.current?.reset();
           if (mapRef.current) fitMapBounds(mapRef.current, bounds);
         },
         zoomBy(delta) {
+          keyboard.current?.reset();
           const map = mapRef.current;
           if (map)
             map.easeTo({
@@ -75,15 +83,24 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
             });
         },
         resetBearing() {
+          keyboard.current?.reset();
           mapRef.current?.easeTo({ bearing: 0, duration: motionDuration(600) });
         },
         rotateBy(delta) {
+          keyboard.current?.reset();
           const map = mapRef.current;
           if (map)
             map.easeTo({
               bearing: map.getBearing() + delta,
               duration: motionDuration(300),
             });
+        },
+        setPitch(pitch) {
+          keyboard.current?.reset();
+          mapRef.current?.easeTo({ pitch, duration: motionDuration(800) });
+        },
+        focusMap() {
+          mapRef.current?.getCanvas().focus({ preventScroll: true });
         },
       }),
       [],
@@ -131,7 +148,7 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
           maxZoom: 19,
           attributionControl: false,
           renderWorldCopies: false,
-          keyboard: true,
+          keyboard: false,
           scrollZoom: current.current.navigationMode === "mouse",
           canvasContextAttributes: { antialias: true },
         });
@@ -143,6 +160,34 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
         return;
       }
       mapRef.current = map;
+      const focusCanvas = () => map.getCanvas().focus({ preventScroll: true });
+      map.getCanvas().addEventListener("pointerdown", focusCanvas);
+      keyboard.current = installKeyboardNavigation(
+        document,
+        window,
+        {
+          applyMotion: ({ pan, bearingDelta, zoomDelta, pitchDelta }) => {
+            if (!loaded.current || disposed) return;
+            // MapLibre panBy negates its screen-space offset. Combine every
+            // axis in one camera update so simultaneous keys stay smooth.
+            map.easeTo({
+              center: map.getCenter(),
+              offset: [-pan[0], -pan[1]],
+              bearing: map.getBearing() + bearingDelta,
+              zoom: Math.max(
+                map.getMinZoom(),
+                Math.min(map.getMaxZoom(), map.getZoom() + zoomDelta),
+              ),
+              pitch: Math.max(
+                map.getMinPitch(),
+                Math.min(map.getMaxPitch(), map.getPitch() + pitchDelta),
+              ),
+              duration: 0,
+            });
+          },
+        },
+        current.current.keyboardEnabled ?? true,
+      );
       const registerOverlapImages = (onlyId?: string) => {
         for (const pattern of currentOverlaps.current.result.patterns) {
           if ((!onlyId || pattern.id === onlyId) && !map.hasImage(pattern.id)) {
@@ -352,6 +397,9 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
         if (initializationTimeout) clearTimeout(initializationTimeout);
         navigation.current?.dispose();
         navigation.current = null;
+        keyboard.current?.dispose();
+        keyboard.current = null;
+        map.getCanvas().removeEventListener("pointerdown", focusCanvas);
         map.remove();
         mapRef.current = null;
       };
@@ -360,6 +408,10 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
     useEffect(() => {
       navigation.current?.setMode(props.navigationMode ?? "trackpad");
     }, [props.navigationMode]);
+
+    useEffect(() => {
+      keyboard.current?.setEnabled(props.keyboardEnabled ?? true);
+    }, [props.keyboardEnabled]);
 
     useEffect(() => {
       const map = mapRef.current;
@@ -411,13 +463,6 @@ const MapView = forwardRef<MapHandle, MapViewProps>(
       fittedRoadId.current = road.id;
       fitMapBounds(map, bounds);
     }, [props.roadSelection, props.roadSelections, props.focusedRoadId]);
-
-    useEffect(() => {
-      mapRef.current?.easeTo({
-        pitch: props.is3D ? 48 : 0,
-        duration: motionDuration(800),
-      });
-    }, [props.is3D]);
 
     return (
       <div

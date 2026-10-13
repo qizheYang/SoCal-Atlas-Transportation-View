@@ -23,6 +23,7 @@ npm run dev
 
 - 每次进入均显示 **SoCal 全览、北朝上、2D**。区域菜单可切换十个县或 LA＋OC；右侧 SoCal 按钮回到全览。
 - **触摸板模式**：双指滑动平移，捏合缩放；**鼠标模式**：拖动平移、滚轮缩放。界面有缩放、左右旋转、N 恢复北向和 2D／3D 按钮。
+- **CSL2 风格键盘**：点击地图后，按住 `WASD` 平移、`Q/E` 旋转、`R/F` 缩放、`T/G` 调整俯仰；`Shift` 加速，`N` 朝北、`0` SoCal 全览、`U` 全览高亮、`/` 搜索、`?` 打开完整说明。输入或打开对话框时暂停相机快捷键，导航栏可停用键盘控制。
 - 城市、道路、公共交通、地形四种视图；可控制建筑、道路、POI、轨道、交通和标签等图层。
 - 搜索道路名称／编号、精选城市、公交／铁路线路或站名。支持 `I-5`、`Main Street`、`Santa Monica Boulevard` 等全称和缩写；同名道路显示城市，城市筛选保留完整跨城道路。
 - I-5、I-10、A-Line 等可同时高亮，分别聚焦／移除，也可全览／清空。真正共线的段落采用双色或多色棋盘纹理；普通交叉不作共线处理。
@@ -35,14 +36,14 @@ npm run dev
 
 完整 **10 县**：Los Angeles、Orange、San Diego、Imperial、Riverside、San Bernardino、Ventura、Santa Barbara、San Luis Obispo、Kern。县域 bounds 与行政区归属取自相同的 Census 边界，含县属离岛。
 
-| 内容 | 实际来源与覆盖 |
-| --- | --- |
-| 基础街网、普通建筑、POI、土地利用 | OpenStreetMap → OpenMapTiles → OpenFreeMap 在线矢量瓦片 |
-| 可搜索道路 | Census TIGER/Line 2025：293,079 个候选，含 149 条完整归并的编号公路 |
-| 城市／地区边界 | Census TIGERweb 2026-01-01：235 城市、328 CDP、10 个县剩余非建制地区 |
-| 公共交通 | 15 个 GTFS feed 组、537 条线路、29,991 个机构站点记录 |
-| 线路详情 | 537 条线路、1,835 组首末站组合 |
-| 地形 | Mapterhorn DEM、hillshade 与三维地表 |
+| 内容                              | 实际来源与覆盖                                                       |
+| --------------------------------- | -------------------------------------------------------------------- |
+| 基础街网、普通建筑、POI、土地利用 | OpenStreetMap → OpenMapTiles → OpenFreeMap 在线矢量瓦片              |
+| 可搜索道路                        | Census TIGER/Line 2025：293,079 个候选，含 149 条完整归并的编号公路  |
+| 城市／地区边界                    | Census TIGERweb 2026-01-01：235 城市、328 CDP、10 个县剩余非建制地区 |
+| 公共交通                          | 15 个 GTFS feed 组、537 条线路、29,991 个机构站点记录                |
+| 线路详情                          | 537 条线路、1,835 组首末站组合                                       |
+| 地形                              | Mapterhorn DEM、hillshade 与三维地表                                 |
 
 交通包括 LA Metro、OCTA、Metrolink、San Diego MTS、Riverside Transit Agency、Omnitrans、SunLine、Imperial Valley Transit、Kern Transit、Golden Empire Transit、Santa Barbara MTD、SLO Regional Transit、SLO Transit 与 Ventura 县聚合 feed。聚合 feed 中保留各实际运营商，因此 feed 组数不等同于独立运营商数。
 
@@ -87,6 +88,6 @@ npm run preview
 - [实施计划与范围演进](docs/PLAN.md)
 - [CSL2 视觉与交互研究](docs/csl2-references.md)
 - [架构](docs/architecture.md)
-- [触摸板与相机交互](docs/navigation.md)
+- [键盘、触摸板与相机交互](docs/navigation.md)
 
 自有源码采用 [MIT License](LICENSE)。OSM 数据适用 ODbL；其他公开 GIS、GTFS 数据和依赖保留各自许可与使用条款。独立项目，与 Cities: Skylines II 发行方无关联。

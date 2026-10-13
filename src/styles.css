@@ -457,7 +457,7 @@ kbd {
   right: var(--edge);
   top: var(--panel-top);
   width: var(--inspector-width);
-  max-height: calc(100% - var(--panel-top) - 306px);
+  max-height: calc(100% - var(--panel-top) - 372px);
   z-index: 4;
   overflow: auto;
   overscroll-behavior: contain;
@@ -530,6 +530,21 @@ kbd {
   font-size: 10px;
   line-height: 1.6;
   color: #a5bdb6;
+}
+.interaction-controls__orientation {
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.keyboard-controls {
+  border-top: 1px solid var(--line);
+  padding-top: 6px;
+}
+.keyboard-controls button {
+  font-size: 10px;
+  gap: 4px;
 }
 .interaction-controls__row > span {
   min-width: 44px;
@@ -1152,7 +1167,7 @@ kbd {
   .inspector-container {
     top: 174px;
     max-width: calc(100% - 20px);
-    max-height: calc(100% - 478px);
+    max-height: calc(100% - 544px);
     z-index: 5;
   }
   .mode-dock {
