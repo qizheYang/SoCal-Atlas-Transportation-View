@@ -81,11 +81,18 @@ node ops/smoke.mjs --origin https://rehydratedwater.com --commit FULL_COMMIT
 
 `status` returns JSON with `current`, `previous`, and available `releases`; choose an exact existing release ID. Rollback is health-checked and does not rewrite Git history. Releases and shared assets are retained on the host; remove obsolete releases only after inspecting `current`/`previous`, and keep shared hashed assets that may still be requested by open tabs. An application code fix should be committed to `main` and allowed to pass the full pipeline.
 
+The existing `digitalocean` SSH operator can also use the receiver through the deployment account. The generated CI private key is stored in GitHub's production environment; its local setup copy is removed after validation.
+
+```bash
+ssh digitalocean 'runuser -u socalmap-deploy -- env SSH_ORIGINAL_COMMAND="status" /usr/local/libexec/socalmap-deploy'
+ssh digitalocean 'runuser -u socalmap-deploy -- env SSH_ORIGINAL_COMMAND="rollback FULL_COMMIT-RUN_ID-ATTEMPT" /usr/local/libexec/socalmap-deploy'
+```
+
 ## Local verification
 
 ```bash
 npm test
-node --test scripts/test_materialize_road_data.mjs ops/*.test.mjs
+node --test scripts/test_materialize_road_data.mjs ops/test_*.mjs
 .venv-data/bin/python -m unittest discover -s scripts -p 'test_*.py'
 python3 -m unittest discover -s ops/tests -p 'test_*.py'
 npm run build -- --base=/socalmap/
