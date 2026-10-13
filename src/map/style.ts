@@ -8,6 +8,7 @@ import type { LayerSettings, TransitFilter, ViewMode } from "../types";
 import type { RouteOverlapResult } from "./routeOverlap";
 import { routeOverlapStyle } from "./overlapStyle";
 import { PLACES } from "../data/regions";
+import { publicAssetUrl } from "../data/publicAssetUrl";
 import {
   activeRoadSelections,
   roadOverlayStyle,
@@ -690,12 +691,12 @@ export function createMapStyle(
       },
       "transit-routes": {
         type: "geojson",
-        data: `${import.meta.env.BASE_URL}data/transit-routes.geojson`,
+        data: publicAssetUrl("/data/transit-routes.geojson"),
         attribution: "Transit: official SoCal agency GTFS",
       },
       "transit-stops": {
         type: "geojson",
-        data: `${import.meta.env.BASE_URL}data/transit-stops.geojson`,
+        data: publicAssetUrl("/data/transit-stops.geojson"),
       },
       "overview-places": { type: "geojson", data: OVERVIEW_PLACES },
       selection: { type: "geojson", data: EMPTY_COLLECTION },

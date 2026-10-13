@@ -20,11 +20,6 @@ export function useRoadData(enabled: boolean) {
     const controller = new AbortController();
     setError("");
     setBoundaryError("");
-    const read = async (url: string) => {
-      const r = await fetch(url, { signal: controller.signal });
-      if (!r.ok) throw new Error(String(r.status));
-      return r.json();
-    };
     const readCatalog = () =>
       readLocalJson(
         "/data/roads-index.json",
@@ -40,7 +35,11 @@ export function useRoadData(enabled: boolean) {
       .catch(() => {
         if (!controller.signal.aborted) setError("道路目录加载失败，请重试。");
       });
-    void read("/data/city-boundaries.geojson")
+    void readLocalJson(
+      "/data/city-boundaries.geojson",
+      undefined,
+      controller.signal,
+    )
       .then((data) => {
         if (!Array.isArray(data.features))
           throw new Error("Invalid boundaries");

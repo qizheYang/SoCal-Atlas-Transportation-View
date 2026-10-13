@@ -28,6 +28,7 @@ import { RoadsPanel, RoadDetails } from "./components/RoadsPanel";
 import { HighlightsTray } from "./components/HighlightsTray";
 import { TransitDetails } from "./components/TransitDetails";
 import { useRoadData } from "./data/useRoadData";
+import { publicAssetUrl } from "./data/publicAssetUrl";
 import {
   createRoadSearch,
   roadEndpoints,
@@ -358,7 +359,9 @@ export default function App() {
   );
   useEffect(() => {
     const controller = new AbortController();
-    void fetch("/data/transit-details.json", { signal: controller.signal })
+    void fetch(publicAssetUrl("/data/transit-details.json"), {
+      signal: controller.signal,
+    })
       .then(async (response) => {
         if (!response.ok) throw new Error("details unavailable");
         const data = await response.json();
@@ -387,13 +390,13 @@ export default function App() {
     const controller = new AbortController();
     async function load() {
       const results = await Promise.allSettled([
-        fetch("/data/transit-manifest.json", {
+        fetch(publicAssetUrl("/data/transit-manifest.json"), {
           signal: controller.signal,
         }).then(async (r) => {
           if (!r.ok) throw new Error("线路目录暂不可用");
           return r.json();
         }),
-        fetch("/data/transit-stops.geojson", {
+        fetch(publicAssetUrl("/data/transit-stops.geojson"), {
           signal: controller.signal,
         }).then(async (r) => {
           if (!r.ok) throw new Error("站点目录暂不可用");

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   featureFilter,
   createExpression,
@@ -11,7 +11,26 @@ import type { ViewMode } from "../types";
 import { computeRouteOverlaps } from "./routeOverlap";
 import { OVERLAP_LAYER, OVERLAP_SOURCE } from "./overlapStyle";
 
+afterEach(() => vi.unstubAllEnvs());
+
 describe("real-data map style", () => {
+  it("loads local transit sources under the deployment base while preserving remote basemap providers", () => {
+    vi.stubEnv("BASE_URL", "/socalmap/");
+    const style = createMapStyle("transit", DEFAULT_LAYERS, false, {
+      agencyIds: [],
+      routeId: null,
+    });
+    expect(style.sources["transit-routes"]).toMatchObject({
+      data: "/socalmap/data/transit-routes.geojson",
+    });
+    expect(style.sources["transit-stops"]).toMatchObject({
+      data: "/socalmap/data/transit-stops.geojson",
+    });
+    expect(style.sources.openmaptiles).toMatchObject({
+      url: "https://tiles.openfreemap.org/planet",
+    });
+    expect(validateStyleMin(style)).toEqual([]);
+  });
   it("uses per-selection comparison colors for lines and member stops while retaining source colors for agency browsing", () => {
     const filter = {
       agencyIds: [],

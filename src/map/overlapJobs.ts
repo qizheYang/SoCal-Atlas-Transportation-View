@@ -1,5 +1,6 @@
 import type { FeatureCollection, LineString, MultiLineString } from "geojson";
 import type { RoadSelection } from "../types";
+import { publicAssetUrl } from "../data/publicAssetUrl";
 import { selectedOverlapRoutes, type RouteOverlapResult } from "./routeOverlap";
 import type { OverlapWorkerResponse } from "./routeOverlap.worker";
 
@@ -15,9 +16,7 @@ let transitCache: Promise<TransitGeometry> | undefined;
 /** Static snapshot shared across selection changes; a failed download may retry. */
 function loadTransitGeometry(): Promise<TransitGeometry> {
   if (!transitCache) {
-    transitCache = fetch(
-      `${import.meta.env.BASE_URL}data/transit-routes.geojson`,
-    )
+    transitCache = fetch(publicAssetUrl("/data/transit-routes.geojson"))
       .then(async (response) => {
         if (!response.ok)
           throw new Error(`Transit geometry: HTTP ${response.status}`);

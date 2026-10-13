@@ -4,6 +4,10 @@
 
 以开放地理数据和官方交通数据构建的南加州交通地图工作台。保留 CSL2 地图编辑器和信息视图的视觉启发，提供真实区域浏览、跨城道路检索、多线路比较与单条详情。
 
+**在线地图：[rehydratedwater.com/socalmap](https://rehydratedwater.com/socalmap/)**
+
+GitHub Actions 对 PR 和 `main` 执行检查；`main` 通过后自动构建 `/socalmap/` 版本并部署到 DigitalOcean。发布采用独立账号、固定主机密钥和原子版本切换。配置、验证和回滚见 [部署说明](docs/deployment.md)。
+
 ## 启动
 
 需要 Node.js 22.12+。项目包含可直接使用的数据快照。

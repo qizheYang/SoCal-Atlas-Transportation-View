@@ -1,3 +1,5 @@
+import { publicAssetUrl } from "./publicAssetUrl";
+
 /** Prefer compact local snapshots while retaining compatibility with raw exports. */
 export async function readLocalJson(
   rawUrl: string,
@@ -6,7 +8,7 @@ export async function readLocalJson(
 ) {
   if (gzipUrl && typeof DecompressionStream !== "undefined") {
     try {
-      const response = await fetch(gzipUrl, { signal });
+      const response = await fetch(publicAssetUrl(gzipUrl), { signal });
       if (!response.ok || !response.body)
         throw new Error("Compressed data unavailable");
       return await new Response(
@@ -16,7 +18,7 @@ export async function readLocalJson(
       if (signal?.aborted) throw error;
     }
   }
-  const response = await fetch(rawUrl, { signal });
+  const response = await fetch(publicAssetUrl(rawUrl), { signal });
   if (!response.ok) throw new Error(`Data request failed: ${response.status}`);
   return response.json();
 }
